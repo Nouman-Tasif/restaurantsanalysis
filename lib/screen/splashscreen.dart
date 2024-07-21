@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:restaurants_app/screen/intro_screen.dart';
 
 import 'package:restaurants_app/screen/onboarding_screen.dart';
 
@@ -20,14 +21,14 @@ class _SplashScreenState extends State<SplashScreen> {
             () => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => OnboardingScreen(),
+              builder: (context) => IntroScreen(),
             )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff313F44),
+      backgroundColor: Colors.white,
       body: Center(
         child: Image.asset("assets/images/restauraurantlogo.jpg"),
       ),

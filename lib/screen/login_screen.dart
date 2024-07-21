@@ -17,16 +17,28 @@ class LoginScreen extends StatelessWidget {
         return Scaffold(
           body: Stack(
             children: [
-              // Gradient Background
+              // Background Image
               Container(
                 decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.blueAccent, Colors.purpleAccent],
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/backgroundimage.jpg'), // Replace with your image path
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
+              // Gradient Overlay
+              // Container(
+              //   decoration:  BoxDecoration(
+              //     gradient: LinearGradient(
+              //       begin: Alignment.topLeft,
+              //       end: Alignment.bottomRight,
+              //       colors: [
+              //         Colors.blueAccent.withOpacity(0.6),
+              //         Colors.purpleAccent.withOpacity(0.6),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               // Login Form
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -51,8 +63,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const Padding(
-                          padding:
-                              EdgeInsetsDirectional.only(top: 20, start: 10),
+                          padding: EdgeInsetsDirectional.only(top: 20, start: 10),
                           child: Text(
                             'Email',
                             style: TextStyle(
@@ -77,8 +88,7 @@ class LoginScreen extends StatelessWidget {
                               keyboardType: TextInputType.emailAddress,
                               decoration: const InputDecoration(
                                 hintText: "Email",
-                                hintStyle: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                hintStyle: TextStyle(fontSize: 15, color: Colors.black),
                                 border: InputBorder.none,
                                 filled: true,
                                 fillColor: Colors.white,
@@ -93,8 +103,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         const Padding(
-                          padding:
-                              EdgeInsetsDirectional.only(top: 20, start: 10),
+                          padding: EdgeInsetsDirectional.only(top: 20, start: 10),
                           child: Text(
                             'Password',
                             style: TextStyle(
@@ -120,8 +129,7 @@ class LoginScreen extends StatelessWidget {
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                 hintText: "Password",
-                                hintStyle: const TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                hintStyle: const TextStyle(fontSize: 15, color: Colors.black),
                                 border: InputBorder.none,
                                 filled: true,
                                 fillColor: Colors.white,
@@ -130,9 +138,7 @@ class LoginScreen extends StatelessWidget {
                                     viewModel.isObscure = !viewModel.isObscure;
                                     viewModel.updateStates();
                                   },
-                                  child: Icon(viewModel.isObscure
-                                      ? Icons.visibility
-                                      : Icons.visibility_off),
+                                  child: Icon(viewModel.isObscure ? Icons.visibility : Icons.visibility_off),
                                 ),
                               ),
                               validator: (value) {
@@ -172,18 +178,14 @@ class LoginScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_formKey.currentState != null &&
-                                  _formKey.currentState!.validate()) {
+                              if (_formKey.currentState != null && _formKey.currentState!.validate()) {
                                 viewModel.loginMethod(context);
                               }
                             },
                             style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(vertical: 16.0)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.transparent),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
+                              padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(vertical: 16.0)),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -199,8 +201,7 @@ class LoginScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                               child: Container(
-                                constraints: const BoxConstraints(
-                                    maxWidth: double.infinity, minHeight: 50.0),
+                                constraints: const BoxConstraints(maxWidth: double.infinity, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   'Login',
@@ -236,18 +237,12 @@ class LoginScreen extends StatelessWidget {
                           margin: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUpScreen()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             },
                             style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  const EdgeInsets.symmetric(vertical: 16.0)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.transparent),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
+                              padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.symmetric(vertical: 16.0)),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                   side: const BorderSide(color: Colors.white),
@@ -260,8 +255,7 @@ class LoginScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                               child: Container(
-                                constraints: const BoxConstraints(
-                                    maxWidth: double.infinity, minHeight: 50.0),
+                                constraints: const BoxConstraints(maxWidth: double.infinity, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   'Sign Up',

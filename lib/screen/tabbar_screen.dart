@@ -1,16 +1,13 @@
-
 import 'package:flutter/material.dart';
-
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurants_app/screen/Order_Screen.dart';
-import 'package:restaurants_app/screen/Profile_screen.dart';
+import 'package:restaurants_app/screen/booking_details_screen.dart';
 import 'package:restaurants_app/screen/booking_screen.dart';
-import 'package:restaurants_app/screen/restaurantslistscreen.dart';
+import 'package:restaurants_app/screen/order_screen.dart';
+import 'package:restaurants_app/screen/profile_screen.dart';
+import 'package:restaurants_app/screen/restaurant_list_screen.dart';
 
 import '../viewmodel/tabbar_viewmodel.dart';
-
-
 
 class TabScreen extends StatelessWidget {
   const TabScreen({super.key});
@@ -22,11 +19,11 @@ class TabScreen extends StatelessWidget {
         return PersistentTabView(
           context,
           controller: viewModel.tabController,
-          screens:  const[
-             RestaurantsScreen(),
-             OrderScreen(),
-            BookingScreen(),
-            ProfileScreen(), // New tab
+          screens: [
+            RestaurantsScreen(),
+            OrderScreen(),
+            BookingDetailsScreen(),
+            ProfileScreen(),
           ],
           items: [
             PersistentBottomNavBarItem(
@@ -38,7 +35,7 @@ class TabScreen extends StatelessWidget {
             PersistentBottomNavBarItem(
               icon: const Icon(Icons.timelapse_sharp),
               title: 'Order',
-              activeColorPrimary: Colors .blue,
+              activeColorPrimary: Colors.blue,
               inactiveColorPrimary: Colors.grey,
             ),
             PersistentBottomNavBarItem(
@@ -74,8 +71,7 @@ class TabScreen extends StatelessWidget {
             curve: Curves.ease,
             duration: Duration(milliseconds: 400),
           ),
-          navBarStyle:
-          NavBarStyle.style11, // Choose the style that suits your needs
+          navBarStyle: NavBarStyle.style11,
         );
       },
     );
