@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurants_app/screen/semantic_analysis_screen.dart';
 import 'package:restaurants_app/viewmodel/restaurantlist_viewmodel.dart';
 import 'menu_screen.dart';
 
@@ -40,7 +41,9 @@ class RestaurantsScreen extends StatelessWidget {
               ListTile(
                 leading: const Icon(Icons.person),
                 title: const Text('My Profile'),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SemanticAnalysisScreen(restaurants: viewModel.restaurants)));
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),

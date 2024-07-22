@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurants_app/constants/constatsvalue.dart';
 import '../model/menumodel.dart';
 import '../model/ordermodel.dart';
 
@@ -53,6 +54,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                 SizedBox(height: 20),
                 Container(
                   color: Colors.black54, // Semi-transparent background
+                  width: DynamicSize.width(0.9, context),
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,10 +88,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                         'Calories: ${order.menuItem.calories} g',
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                      Text(
-                        'Ordered at: ${order.orderTime}',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+
                     ],
                   ),
                 ),

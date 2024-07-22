@@ -72,8 +72,7 @@ class OrderScreen extends StatelessWidget {
                               icon: Icon(Icons.details),
                               label: Text('View Details'),
                               style: ElevatedButton.styleFrom(
-                                primary: Theme.of(context).primaryColor,
-                                onPrimary: Colors.white,
+                                foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurants_app/screen/splashscreen.dart';
 import 'package:restaurants_app/screen/tabbar_screen.dart';
 import 'package:restaurants_app/viewmodel/forgot_viewmodel.dart';
 import 'package:restaurants_app/viewmodel/loginviewmodel.dart';

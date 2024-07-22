@@ -61,9 +61,8 @@ class MenuDetailScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
+                      foregroundColor: Colors.white, backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
-                      onPrimary: Colors.white,
                     ),
                     onPressed: () {
                       Navigator.push(
