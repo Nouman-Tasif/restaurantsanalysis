@@ -6,10 +6,10 @@ class SentimentAnalysis {
 
   Future<String> analyzeSentiment(String text) async {
     await flutterTts.speak(text);
-    // Simulate sentiment analysis result
-    if (text.contains('great') || text.contains('excellent') || text.contains('loved')) {
+    // Simulate sentiment analysis result with updated logic
+    if (text.contains('fantastic') || text.contains('awesome') || text.contains('incredible') || text.contains('Absolutely') || text.contains('Decent')) {
       return 'Positive';
-    } else if (text.contains('average') || text.contains('not as expected')) {
+    } else if (text.contains('okay') || text.contains('so-so') || text.contains('mediocre')) {
       return 'Neutral';
     } else {
       return 'Negative';

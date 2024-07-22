@@ -23,7 +23,7 @@ class TabScreen extends StatelessWidget {
             RestaurantsScreen(),
             OrderScreen(),
             BookingDetailsScreen(),
-            ProfileScreen(),
+
           ],
           items: [
             PersistentBottomNavBarItem(
@@ -44,12 +44,7 @@ class TabScreen extends StatelessWidget {
               activeColorPrimary: Colors.blue,
               inactiveColorPrimary: Colors.grey,
             ),
-            PersistentBottomNavBarItem(
-              icon: const Icon(Icons.person),
-              title: 'Profile',
-              activeColorPrimary: Colors.blue,
-              inactiveColorPrimary: Colors.grey,
-            ),
+
           ],
           backgroundColor: Colors.white,
           handleAndroidBackButtonPress: true,
