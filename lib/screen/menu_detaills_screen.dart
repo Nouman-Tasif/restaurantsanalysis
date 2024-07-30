@@ -61,7 +61,8 @@ class MenuDetailScreen extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.transparent,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                     ),
                     onPressed: () {
@@ -90,7 +91,8 @@ class MenuDetailScreen extends StatelessWidget {
 
   Widget _buildAllergens(MenuItem menuItem) {
     if (menuItem.allergens.isEmpty) {
-      return SizedBox.shrink(); // Return an empty widget if there are no allergens
+      return SizedBox
+          .shrink(); // Return an empty widget if there are no allergens
     }
 
     return Column(
@@ -106,8 +108,8 @@ class MenuDetailScreen extends StatelessWidget {
           runSpacing: 4.0,
           children: menuItem.allergens
               .map((allergen) => Chip(
-            label: Text(allergen),
-          ))
+                    label: Text(allergen),
+                  ))
               .toList(),
         ),
       ],

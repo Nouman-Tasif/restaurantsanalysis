@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurants_app/screen/booking_details_screen.dart';
-import 'package:restaurants_app/screen/booking_screen.dart';
 import 'package:restaurants_app/screen/order_screen.dart';
-import 'package:restaurants_app/screen/profile_screen.dart';
 import 'package:restaurants_app/screen/restaurant_list_screen.dart';
 
 import '../viewmodel/tabbar_viewmodel.dart';
@@ -23,7 +21,6 @@ class TabScreen extends StatelessWidget {
             RestaurantsScreen(),
             OrderScreen(),
             BookingDetailsScreen(),
-
           ],
           items: [
             PersistentBottomNavBarItem(
@@ -44,7 +41,6 @@ class TabScreen extends StatelessWidget {
               activeColorPrimary: Colors.blue,
               inactiveColorPrimary: Colors.grey,
             ),
-
           ],
           backgroundColor: Colors.white,
           handleAndroidBackButtonPress: true,

@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurants_app/screen/review_screen.dart';
 import 'package:restaurants_app/screen/semantic_analysis_screen.dart';
 import 'package:restaurants_app/viewmodel/restaurantlist_viewmodel.dart';
+
+import '../constants/constatsvalue.dart';
 import 'menu_screen.dart';
 
 class RestaurantsScreen extends StatelessWidget {
@@ -11,45 +16,64 @@ class RestaurantsScreen extends StatelessWidget {
       return Scaffold(
         appBar: AppBar(title: Text('Restaurants')),
         drawer: Drawer(
-          backgroundColor: Colors.lime,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
+              DrawerHeader(
+                decoration: const BoxDecoration(
                   color: Colors.blue,
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: AssetImage('assets/images/personiamge.jpeg'),
-                      backgroundColor: Colors.black,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "User Name",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
+                child: FutureBuilder<DocumentSnapshot>(
+                  future: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(DynamicSize().user?.uid)
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var userData = snapshot.data!.data() as Map<String, dynamic>?;
+                      DynamicSize.username = userData?['username'];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CircleAvatar(
+                            radius: 40,
+                            backgroundImage: AssetImage('assets/images/profileimage.jpg'),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            "${userData!['username']}",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
                 ),
               ),
               ListTile(
                 leading: const Icon(Icons.person),
-                title: const Text('My Profile'),
+                title: const Text('Semantic Analysis'),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SemanticAnalysisScreen(restaurants: viewModel.restaurants)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>SemanticAnalysisScreen(restaurants: viewModel.restaurants)));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.feedback),
+                title: const Text('Give Feedback'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>ReviewScreen()));
                 },
               ),
               ListTile(
                 leading: const Icon(Icons.logout),
                 title: const Text('Logout'),
                 onTap: () async {
-                  // Logout logic
+
                 },
               ),
             ],
@@ -60,7 +84,8 @@ class RestaurantsScreen extends StatelessWidget {
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/restaurantbackgroundimage.png'),
+                  image:
+                      AssetImage('assets/images/restaurantbackgroundimage.png'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -83,8 +108,10 @@ class RestaurantsScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              MenuScreen(restaurantId: restaurant.id, restaurantName: restaurant.name, menu: restaurant.menu),
+                          builder: (context) => MenuScreen(
+                              restaurantId: restaurant.id,
+                              restaurantName: restaurant.name,
+                              menu: restaurant.menu),
                         ),
                       );
                     },

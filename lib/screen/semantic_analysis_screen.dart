@@ -44,7 +44,7 @@ class SemanticAnalysisScreen extends StatelessWidget {
                         } else if (snapshot.hasData) {
                           return Text(snapshot.data!); // Use ! to assert that snapshot.data is not null
                         } else {
-                          return Text('Unknown');
+                          return const Text('Unknown');
                         }
                       },
                     ),

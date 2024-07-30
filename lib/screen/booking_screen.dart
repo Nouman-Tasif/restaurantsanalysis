@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class BookingScreen extends StatefulWidget {
   final String restaurantId;
   final String restaurantName;
-  final int tableLimit; // Add table limit as a parameter
+  final int tableLimit;
 
   BookingScreen({
     required this.restaurantId,
     required this.restaurantName,
-    required this.tableLimit, // Add table limit as a parameter
+    required this.tableLimit,
   });
 
   @override
@@ -27,7 +28,13 @@ class _BookingScreenState extends State<BookingScreen> {
   final _phoneController = TextEditingController();
   final _commentsController = TextEditingController();
 
-  int availableSeats = 0;
+  int availableSeats = 0; // This will be dynamically fetched based on bookings
+
+  @override
+  void initState() {
+    super.initState();
+    availableSeats = widget.tableLimit;
+  }
 
   @override
   void dispose() {
@@ -45,6 +52,7 @@ class _BookingScreenState extends State<BookingScreen> {
   InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,
+      labelStyle: TextStyle(color: Colors.white),
       fillColor: Colors.white.withOpacity(0.56),
       filled: true,
       border: OutlineInputBorder(
@@ -110,7 +118,11 @@ class _BookingScreenState extends State<BookingScreen> {
                     children: <Widget>[
                       Text(
                         'BOOKING',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -122,15 +134,15 @@ class _BookingScreenState extends State<BookingScreen> {
                           DateTime? selectedDate = await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
+                            firstDate: DateTime.now(),
                             lastDate: DateTime(2101),
                           );
 
                           if (selectedDate != null) {
                             setState(() {
-                              _dateController.text = '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}'; // Format date as YYYY-MM-DD
+                              _dateController.text = DateFormat('yyyy-MM-dd').format(selectedDate); // Format date as YYYY-MM-DD
                             });
-                            _fetchAvailableSeats();
+                            _updateAvailableSeats();
                           }
                         },
                         validator: (value) {
@@ -156,7 +168,7 @@ class _BookingScreenState extends State<BookingScreen> {
                             setState(() {
                               _timeController.text = selectedTime.format(context); // Format time as HH:mm AM/PM
                             });
-                            _fetchAvailableSeats();
+                            _updateAvailableSeats();
                           }
                         },
                         validator: (value) {
@@ -184,7 +196,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         },
                       ),
                       SizedBox(height: 10),
-                      Text('Available seats: $availableSeats'), // Display available seats
+                      Text('Available seats: $availableSeats'),
                       SizedBox(height: 10),
                       TextFormField(
                         controller: _firstNameController,
@@ -254,59 +266,96 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  void _fetchAvailableSeats() async {
-    final dateTime = '${_dateController.text} ${_timeController.text}';
-    final snapshot = await FirebaseFirestore.instance
-        .collection('bookings')
-        .where('restaurantId', isEqualTo: widget.restaurantId)
-        .where('datetime', isEqualTo: dateTime)
-        .get();
-
-    int bookedSeats = snapshot.docs.fold(0, (total, doc) => total + int.parse(doc['seats']));
-    setState(() {
-      availableSeats = widget.tableLimit - bookedSeats;
-    });
-  }
-
   void _checkBookingLimit() async {
-    final dateTime = '${_dateController.text} ${_timeController.text}';
+    await _checkForExpiredBookings(); // Check and remove expired bookings before checking booking limit
+
+    if (_dateController.text.isEmpty || _timeController.text.isEmpty) return;
+
+    final dateTime = _getFormattedDateTime();
     final snapshot = await FirebaseFirestore.instance
         .collection('bookings')
         .where('restaurantId', isEqualTo: widget.restaurantId)
-        .where('datetime', isEqualTo: dateTime)
+        .where('datetime', isEqualTo: dateTime.toIso8601String()) // store as ISO8601
         .get();
 
-    int bookedSeats = snapshot.docs.fold(0, (total, doc) => total + int.parse(doc['seats']));
-
-    if (bookedSeats >= widget.tableLimit) {
+    int bookedSeats =
+    snapshot.docs.fold(0, (total, doc) => total + int.parse(doc['seats']));
+    if (bookedSeats + int.parse(_seatsController.text) > widget.tableLimit) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Booking limit reached for the selected date and time.')),
+        SnackBar(
+          content: Text('No seats available for this date and time. Please select another time.'),
+        ),
       );
     } else {
-      _saveBooking();
+      _bookTable();
     }
   }
 
-  void _saveBooking() {
+  void _bookTable() {
+    final dateTime = _getFormattedDateTime();
     final bookingData = {
-      'name': '${_firstNameController.text} ${_lastNameController.text}',
-      'datetime': '${_dateController.text} ${_timeController.text}', // Save combined date and time
+      'restaurantId': widget.restaurantId,
+      'restaurantName': widget.restaurantName,
+      'datetime': dateTime.toIso8601String(), // store as ISO8601
       'seats': _seatsController.text,
+      'firstName': _firstNameController.text,
+      'lastName': _lastNameController.text,
       'email': _emailController.text,
       'phone': _phoneController.text,
       'comments': _commentsController.text,
-      'restaurantId': widget.restaurantId,
-      'restaurantName': widget.restaurantName,
     };
 
-    FirebaseFirestore.instance
+    FirebaseFirestore.instance.collection('bookings').add(bookingData);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Booking confirmed!'),
+      ),
+    );
+
+    // Clear form fields after booking
+    _dateController.clear();
+    _timeController.clear();
+    _seatsController.clear();
+    _firstNameController.clear();
+    _lastNameController.clear();
+    _emailController.clear();
+    _phoneController.clear();
+    _commentsController.clear();
+  }
+
+  DateTime _getFormattedDateTime() {
+    final date = _dateController.text;
+    final time = _timeController.text;
+    return DateFormat('yyyy-MM-dd hh:mm a').parse('$date $time');
+  }
+
+  Future<void> _checkForExpiredBookings() async {
+    final now = DateTime.now();
+    final snapshot = await FirebaseFirestore.instance
         .collection('bookings')
-        .add(bookingData)
-        .then((_) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Table booked successfully!')));
-      Navigator.pop(context);
-    }).catchError((error) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to book table: $error')));
+        .where('datetime', isLessThanOrEqualTo: now.toIso8601String()) // use ISO8601 format
+        .get();
+
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
+  }
+
+  void _updateAvailableSeats() async {
+    if (_dateController.text.isEmpty || _timeController.text.isEmpty) return;
+
+    final dateTime = _getFormattedDateTime();
+    final snapshot = await FirebaseFirestore.instance
+        .collection('bookings')
+        .where('restaurantId', isEqualTo: widget.restaurantId)
+        .where('datetime', isEqualTo: dateTime.toIso8601String()) // use ISO8601 format
+        .get();
+
+    int bookedSeats =
+    snapshot.docs.fold(0, (total, doc) => total + int.parse(doc['seats']));
+    setState(() {
+      availableSeats = widget.tableLimit - bookedSeats;
     });
   }
 }

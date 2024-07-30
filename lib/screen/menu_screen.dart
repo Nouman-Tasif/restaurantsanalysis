@@ -36,9 +36,9 @@ class MenuScreen extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => BookingScreen(
-                  restaurantId: restaurantId,
-                  restaurantName: restaurantName,
-                  tableLimit: 20),
+                restaurantId: restaurantId,
+                restaurantName: restaurantName,
+                tableLimit: 20),
             ),
           );
         },

@@ -39,7 +39,6 @@ class BookingDetailsScreen extends StatelessWidget {
             }
 
             final bookings = snapshot.data!.docs;
-            final dateFormat = DateFormat('yyyy-MM-dd hh:mm a'); // Adjust the format as needed
 
             return AnimationLimiter(
               child: ListView.builder(
@@ -50,7 +49,7 @@ class BookingDetailsScreen extends StatelessWidget {
                   DateTime? bookingDateTime;
 
                   try {
-                    bookingDateTime = dateFormat.parse(bookingDateTimeString);
+                    bookingDateTime = DateTime.parse(bookingDateTimeString);
                   } catch (e) {
                     print('Error parsing date: $e');
                     bookingDateTime = DateTime.now(); // Fallback to current date if parsing fails
@@ -77,7 +76,7 @@ class BookingDetailsScreen extends StatelessWidget {
                           ),
                           child: ListTile(
                             title: Text(
-                              booking['name'],
+                              booking['firstName'],
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             subtitle: Column(
@@ -85,7 +84,7 @@ class BookingDetailsScreen extends StatelessWidget {
                               children: [
                                 Text('Restaurant Name: ${booking['restaurantName']}', style: TextStyle(fontSize: 15)),
                                 Text('Seats: ${booking['seats']}'),
-                                Text('Time: ${dateFormat.format(bookingDateTime!)}'),
+                                Text('Time: ${DateFormat('yyyy-MM-dd hh:mm a').format(bookingDateTime)}'),
                               ],
                             ),
                             trailing: isFutureBooking

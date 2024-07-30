@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurants_app/constants/constatsvalue.dart';
 import '../model/menumodel.dart';
@@ -15,6 +16,8 @@ class OrderConfirmationScreen extends StatelessWidget {
 
     Future<void> _placeOrder() async {
       await FirebaseFirestore.instance.collection('orders').add({
+
+        "username": DynamicSize.username,
         'itemName': order.menuItem.name,
         'price': order.menuItem.price,
         'orderTime': order.orderTime,

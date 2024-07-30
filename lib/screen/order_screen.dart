@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:restaurants_app/screen/mygooglepay.dart';
 
 class OrderScreen extends StatelessWidget {
   @override
@@ -25,6 +26,7 @@ class OrderScreen extends StatelessWidget {
             itemCount: orders.length,
             itemBuilder: (context, index) {
               var order = orders[index];
+debugPrint('Person Name :  ${order['username']}');
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
@@ -58,6 +60,13 @@ class OrderScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Text(
+                              'Person Name :  ${order['username']}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            Text(
                               'Ordered at: ${order['orderTime'].toDate()}',
                               style: TextStyle(
                                 fontSize: 16,
@@ -65,19 +74,38 @@ class OrderScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 16),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                // Implement order details or action
-                              },
-                              icon: Icon(Icons.details),
-                              label: Text('View Details'),
-                              style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                            Row(
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    _cancelBooking(order.id, context);
+                                  },
+                                  icon: Icon(Icons.details),
+                                  label: Text('Cancel '),
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                                SizedBox(width: 20,),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                   Navigator.push(context, MaterialPageRoute(builder: (context) =>MyGooglePay(amount: order['price'],)));
+                                  },
+                                  icon: Icon(Icons.payment),
+                                  label: Text('Pay'),
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white, backgroundColor: Theme.of(context).primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+
                           ],
                         ),
                       ),
@@ -91,4 +119,15 @@ class OrderScreen extends StatelessWidget {
       ),
     );
   }
+  void _cancelBooking(String bookingId, BuildContext context) {
+    FirebaseFirestore.instance.collection('orders')
+        .doc(bookingId)
+        .delete()
+        .then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Order Cancelled')));
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to cancel Order: $error')));
+    });
+  }
 }
+

@@ -10,6 +10,9 @@ class SignUpScreen extends StatelessWidget {
 
   final _formField = GlobalKey<FormState>();
 
+  final _emailRegex = RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+
   @override
   Widget build(BuildContext context) {
     return Consumer<SignUpViewModel>(builder: (context, viewModel, _) {
@@ -20,20 +23,12 @@ class SignUpScreen extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/photo1.jpeg'),
-                  // Replace with your image path
                   fit: BoxFit.cover,
                 ),
               ),
             ),
             SizedBox(
               height: DynamicSize.height(1, context),
-              // decoration: BoxDecoration(
-              //   gradient: LinearGradient(
-              //     colors: [Colors.blue.shade200, Colors.blue.shade800],
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter,
-              //   ),
-              // ),
               child: Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: DynamicSize.width(0.05, context)),
@@ -131,10 +126,12 @@ class SignUpScreen extends StatelessWidget {
                                 fillColor: Colors.white,
                               ),
                               validator: (value) {
-                                if (value != null && value.isNotEmpty) {
-                                  return null;
+                                if (value == null || value.isEmpty) {
+                                  return "Enter email";
+                                } else if (!_emailRegex.hasMatch(value)) {
+                                  return "Enter a valid email";
                                 }
-                                return "Enter email";
+                                return null;
                               },
                             ),
                           ),
