@@ -64,7 +64,7 @@ class RestaurantsScreen extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.feedback),
-                title: const Text('Give Feedback'),
+                title: const Text('Reviews'),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) =>ReviewScreen()));
                 },
