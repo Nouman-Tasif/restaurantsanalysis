@@ -1,4 +1,4 @@
-/*
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurants_app/constants/constatsvalue.dart';
@@ -7,8 +7,8 @@ import 'package:restaurants_app/screen/signupscreen.dart';
 import '../model/onboardingdatamodel.dart';
 
 class OnboardingScreen extends StatelessWidget {
-  final List<OnboardingInfo> onboardingPages = [*/
-/**//*
+  final List<OnboardingInfo> onboardingPages = [
+
 
     OnboardingInfo(
       imagePath: 'assets/images/chicken_tikka.jpg',
@@ -143,4 +143,4 @@ class OnboardingScreen extends StatelessWidget {
     );
   }
 }
-*/
+

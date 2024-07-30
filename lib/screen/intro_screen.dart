@@ -66,11 +66,11 @@ class IntroScreen extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          // Navigate to the next screen (e.g., Login or Home screen)
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                          // );
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                          );
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,

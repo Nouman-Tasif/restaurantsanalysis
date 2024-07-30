@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       child:   MaterialApp(
         color: Color(0xffF1F4FC),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: TabScreen(),
       ),
     );
   }
