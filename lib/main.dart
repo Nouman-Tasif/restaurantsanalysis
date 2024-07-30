@@ -3,8 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurants_app/screen/signupscreen.dart';
-import 'package:restaurants_app/screen/splashscreen.dart';
+
 
 import 'package:restaurants_app/screen/tabbar_screen.dart';
 import 'package:restaurants_app/viewmodel/forgot_viewmodel.dart';
@@ -17,12 +16,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  // await Firebase.initializeApp(
-  //     options: const FirebaseOptions(
-  //         apiKey: "AIzaSyBQoUWANr9htsFMxDPRGuUelU-LbcUS5wc",
-  //         appId: "1:481176292310:web:c2490b9a3eb358afffb277",
-  //         messagingSenderId: "481176292310",
-  //         projectId: "restaurantapp-ecb4c"));
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "AIzaSyAFh77wa5DDpuqub82X_xTHRGfYhm17kI8",
+          projectId: "restaurantapp-ecb4c",
+          storageBucket: "restaurantapp-ecb4c.appspot.com",
+          messagingSenderId: "481176292310",
+          appId: "1:481176292310:web:c2490b9a3eb358afffb277",
+         ));
   runApp(const MyApp());
 }
 

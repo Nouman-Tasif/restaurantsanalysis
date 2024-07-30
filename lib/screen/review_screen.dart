@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
-import 'dart:math';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
+import 'dart:js' as js;
+
+
 class ReviewScreen extends StatefulWidget {
   const ReviewScreen({super.key});
 
@@ -12,7 +10,6 @@ class ReviewScreen extends StatefulWidget {
 }
 
 class _ReviewScreenState extends State<ReviewScreen> {
-  Interpreter? _interpreter;
   final List<String> _labels = ['Negative', 'Neutral', 'Positive'];
   String _sentimentResult = 'Enter a review to see the sentiment';
 
@@ -24,124 +21,354 @@ class _ReviewScreenState extends State<ReviewScreen> {
     'good': 4,
     'bad': 5,
     'movie': 6,
-    // Add more words as necessary
+    'absolutely': 7,
+    'delicious': 8,
+    'couldn’t': 9,
+    'get': 10,
+    'enough': 11,
+    'decent': 12,
+    'food': 13,
+    'but': 14,
+    'the': 15,
+    'service': 16,
+    'use': 17,
+    'some': 18,
+    'improvement': 19,
+    'exceptional': 20,
+    'quality': 21,
+    'and': 22,
+    'presentation': 23,
+    'highly': 24,
+    'recommended': 25,
+    'menu': 26,
+    'had': 27,
+    'plenty': 28,
+    'of': 29,
+    'options': 30,
+    'to': 31,
+    'satisfy': 32,
+    'my': 33,
+    'cravings': 34,
+    'true': 35,
+    'culinary': 36,
+    'experience': 37,
+    'every': 38,
+    'dish': 39,
+    'was': 40,
+    'masterpiece': 41,
+    'flavors': 42,
+    'were': 43,
+    'bold': 44,
+    'perfectly': 45,
+    'balanced': 46,
+    'impressed': 47,
+    'enjoyed': 48,
+    'cozy': 49,
+    'atmosphere': 50,
+    'attentive': 51,
+    'staff': 52,
+    'top-notch': 53,
+    'taste': 54,
+    'fell': 55,
+    'short': 56,
+    'disappointed': 57,
+    'lack': 58,
+    'variety': 59,
+    'on': 60,
+    'keep': 61,
+    'coming': 62,
+    'back': 63,
+    'great': 64,
+    'for': 65,
+    'date': 66,
+    'night': 67,
+    'romantic': 68,
+    'ambiance': 69,
+    'wonderful': 70,
+
+    'exceeded': 72,
+    'expectations': 73,
+    'hidden': 74,
+    'gem': 75,
+    'portions': 76,
+    'bit': 77,
+    'small': 78,
+    'made': 79,
+    'up': 80,
+    'it': 81,
+    'masterful': 82,
+    'blend': 83,
+    'textures': 84,
+    'impeccable': 85,
+    'needs': 86,
+    'more': 87,
+    'vegetarian/vegan': 88,
+    'options': 89,
+    'loved': 90,
+    'visually': 91,
+    'appealing': 92,
+    'didn': 93,
+    'quite': 94,
+    'match': 95,
+    'diversity': 96,
+    'creativity': 97,
+    'elsewhere': 98,
+    'perfect': 99,
+    'special': 100,
+    'occasion': 101,
+    'innovative': 102,
+    'dishes': 103,
+    'showcased': 104,
+    'chef': 105,
+    'talent': 106,
+    'sizes': 107,
+    'just': 108,
+    'right': 109,
+    'spot': 110,
+    'delight': 111,
+    'vegetarian': 112,
+    'surprisingly': 113,
+    'satisfying': 114,
+    'ambiance': 115,
+    'impeccable': 116,
+    'service': 117,
+    'beautifully': 118,
+    'presented': 119,
+    'refinement': 120,
+    'lacked': 121,
+    'originality': 122,
+    'delectable': 123,
+    'generous': 124,
+    'divine': 125,
+    'outstanding': 126,
+    'loved': 127,
+    'bites': 128,
+    'fantastic': 129,
+    'warm': 130,
+    'welcoming': 131,
+    'memorable': 132,
+    'fresh': 133,
+    'ingredients': 134,
+    'creative': 135,
+    'mouthwatering': 136,
+    'best': 137,
+    'ages': 138,
+    'truly': 139,
+    'exceptional': 140,
+    'must-visit': 141,
+    'hit': 142,
+    'cozy': 143,
+    'dinner': 144,
+    'superb': 145,
+    'presentation': 146,
+    'impressed': 147,
+    'taste': 148,
+    'culinary': 149,
+    'journey': 150,
+    'worth': 151,
+    'taking': 152,
+    'fantastic': 153,
+    'lovely': 154,
+    'friendly': 155,
+    'delightful': 156,
+    'start': 157,
+    'finish': 158,
+    'real': 159,
+    'treat': 160,
+    'cooked': 161,
+    'perfection': 162,
+    'charming': 163,
+    'menu': 164,
+    'delivers': 165,
+    'taste': 166,
+    'blend': 167,
+    'elegance': 168,
+    'escape': 169,
+    'treasure': 170,
+    'incredible': 171,
+    'vibrant': 172,
+    'great': 173,
+    'experience': 174,
+    'fine': 175,
+    'dining': 176,
+    'spot': 177,
+    'brunch': 178,
+    'recommend': 179,
+    'tasting': 180,
+    'cozy': 181,
+    'vibe': 182,
+    'efficient': 183,
+    'made': 184,
+    'meal': 185,
+    'even': 186,
+    'better': 187,
+    'celebrate': 188,
+    'gatherings': 189,
+    'decor': 190,
+    'relaxing': 191,
+    'ambiance': 192,
+    'unique': 193,
+    'twist': 194,
+    'exceeded': 195,
+    'expectations': 196,
+    'friendly': 197,
+    'efficient': 198,
+    'appetizers': 199,
+    'start': 200,
+    'fantastic': 201,
+    'meal': 202,
+    'special': 203,
+    'attention': 204,
+    'dietary': 205,
+    'restrictions': 206,
+    'preferences': 207,
+    'loves': 208,
+    'environment': 209,
+    'blend': 210,
+    'tradition': 211,
+    'standout': 212,
+    'area': 213,
+    'incredible': 214,
+    'generous': 215,
+    'servings': 216,
+    'lively': 217,
+    'enjoyable': 218,
+    'brunch': 219,
+    'highly': 220,
+    'recommend': 221,
+    'delightful': 222,
+    'cozy': 223,
+    'vibe': 224,
+    'above': 225,
+    'beyond': 226,
+    'ensure': 227,
+    'great': 228,
+    'experience': 229,
+    'truly': 230,
+    'gourmet': 231,
+    'vegetarian': 232,
+    'vegan': 233,
+    'casual': 234,
+    'beautiful': 235,
+    'coffee': 236,
+    'breakfast': 237,
+    'options': 238,
+    'mix': 239,
+    'family': 240,
+    'gatherings': 241,
+    'beautiful': 242,
+    'decor': 243,
+    'innovative': 244,
+    'tantalize': 245,
+    'taste': 246,
+    'buds': 247,
+    'served': 248,
+    'friendly': 249,
+    'impressed': 250,
+    'flavors': 251,
+    'delivered': 252,
+    'satisfaction': 253,
+    'all': 254,
+    'around': 255,
+    'flavors': 256,
+    'presentation': 257,
+    'remarkable': 258,
+    'memorable': 259,
+    'flavors': 260,
+    'match': 261,
+    'visually': 262,
+    'pleasing': 263,
+    'flavors': 264,
+    'refreshing': 265,
+    'celebration': 266,
+    'culinary': 267,
+    'artistry': 268,
+    'intimate': 269,
+    'dining': 270,
+    'celebrate': 271,
+    'environment': 272,
+    'perfect': 273,
+    'dinner': 274,
+    'party': 275,
+    'incredible': 276,
+    'environment': 277,
+    'catered': 278,
+    'delicate': 279,
+    'presentation': 280,
+    'flavors': 281,
+    'symphony': 282,
+    'worth': 283,
+    'exploring': 284,
+    'memorable': 285,
+    'brunch': 286,
+    'delightful': 287,
+    'combination': 288,
+    'great': 289,
+    'venue': 290,
+    'memorable': 291,
+    'dining': 292,
+    'spot': 293,
+    'escape': 294,
+    'flavors': 295,
+    'were': 296,
+    'harmonious': 297,
+    'experience': 298,
+    'back': 299,
+    'soon': 300
   };
 
-  @override
-  void initState() {
-    super.initState();
-    _loadModel();
+  final TextEditingController _reviewController = TextEditingController();
+
+  Future<void> _analyzeSentiment(String review) async {
+    final List<int> inputTokens = _convertReviewToTokens(review);
+    final js.JsObject model = js.JsObject(js.context['tf'].callMethod('loadLayersModel', ['path/to/your/model.json']));
+    final js.JsObject tensor = js.JsObject(js.context['tf'].callMethod('tensor2d', [inputTokens, [1, inputTokens.length]]));
+    final js.JsObject prediction = model.callMethod('predict', [tensor]);
+    final List<double> result = List<double>.from(prediction.callMethod('dataSync'));
+    final int labelIndex = result.indexOf(result.reduce((curr, next) => curr > next ? curr : next));
+    setState(() {
+      _sentimentResult = _labels[labelIndex];
+    });
   }
 
-  Future<void> _loadModel() async {
-    try {
-      final modelPath = await _getModelPath('assets/sentiment_model.tflite');
-      _interpreter = await Interpreter.fromFile(File(modelPath));
-      print('Model loaded successfully');
-    } catch (e) {
-      print('Error loading model: $e');
-      setState(() {
-        _sentimentResult = 'Error: Model not loaded. Details: $e';
-      });
-    }
-  }
-
-  Future<String> _getModelPath(String assetName) async {
-    final directory = await getApplicationDocumentsDirectory();
-    final modelFile = File('${directory.path}/sentiment_model.tflite');
-
-    if (!await modelFile.exists()) {
-      final byteData = await rootBundle.load(assetName);
-      await modelFile.writeAsBytes(byteData.buffer.asUint8List());
-    }
-
-    return modelFile.path;
-  }
-
-  List<double> _preprocessReview(String review) {
-    // Convert the review to lower case, split it into words, and map each word to its index
-    List<String> words = review.toLowerCase().split(' ');
-    return words.map((word) => _vocab[word]?.toDouble() ?? 0.0).toList();
-  }
-
-  Future<void> _predictSentiment(String review) async {
-    if (_interpreter == null) {
-      setState(() {
-        _sentimentResult = 'Error: Model not loaded';
-      });
-      return;
-    }
-
-    // Preprocess the input text
-    List<double> inputTensor = _preprocessReview(review);
-
-    // Check the input shape expected by the model
-    var inputShape = _interpreter!.getInputTensor(0).shape;
-    int maxLength = inputShape[1]; // Assuming input shape is [1, maxLength]
-
-    // Pad or truncate the input tensor to match the model's input size
-    List<double> paddedInput = _padOrTruncateInput(inputTensor, maxLength);
-
-    // Create input and output tensors
-    try {
-      // Prepare input and output tensors
-      var input = [paddedInput];
-      var output = List.filled(1 * _labels.length, 0.0).reshape(
-          [1, _labels.length]);
-
-      // Run the model inference
-      _interpreter!.run(input, output);
-
-      // Find the index of the max score in the output
-      int maxIndex = output[0].indexOf(output[0].reduce(max));
-
-      // Update UI with the sentiment result
-      setState(() {
-        _sentimentResult = _labels[maxIndex];
-      });
-    } catch (e) {
-      setState(() {
-        _sentimentResult = 'Error during inference: $e';
-      });
-    }
-  }
-
-  List<double> _padOrTruncateInput(List<double> inputTensor, int maxLength) {
-    if (inputTensor.length > maxLength) {
-      // Truncate the input
-      return inputTensor.sublist(0, maxLength);
-    } else {
-      // Pad the input
-      return inputTensor + List.filled(maxLength - inputTensor.length, 0.0);
-    }
+  List<int> _convertReviewToTokens(String review) {
+    final List<String> tokens = review.toLowerCase().split(' ');
+    final List<int> tokenIndices = tokens.map((token) => _vocab[token] ?? 0).toList();
+    return tokenIndices;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sentiment Analysis')),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                onSubmitted: (review) {
-                  _predictSentiment(review);
-                },
-                decoration: InputDecoration(
-                  hintText: 'Enter a review',
-                  border: OutlineInputBorder(),
-                ),
+      appBar: AppBar(
+        title: const Text('Review Sentiment Analysis'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: _reviewController,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Enter your review',
               ),
-              SizedBox(height: 20),
-              Text(
-                _sentimentResult,
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                final review = _reviewController.text;
+                _analyzeSentiment(review);
+              },
+              child: const Text('Analyze Sentiment'),
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              _sentimentResult,
+              style: const TextStyle(fontSize: 24),
+            ),
+          ],
         ),
       ),
     );
