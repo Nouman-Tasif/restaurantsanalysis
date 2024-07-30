@@ -26,23 +26,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/toxicity"></script>
 
     <script>
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAFh77wa5DDpuqub82X_xTHRGfYhm17kI8",
-            projectId: "restaurantapp-ecb4c",
+              const firebaseConfig = {
+          apiKey: "AIzaSyBQoUWANr9htsFMxDPRGuUelU-LbcUS5wc",
+       authDomain: "restaurantapp-ecb4c.firebaseapp.com",
+     projectId: "restaurantapp-ecb4c",
+  storageBucket: "restaurantapp-ecb4c.appspot.com",
+  messagingSenderId: "481176292310",
+  appId: "1:481176292310:web:c2490b9a3eb358afffb277",
+  measurementId: "G-8SQD445QB0"
+};
 
-            messagingSenderId: "481176292310",
-            appId: "1:481176292310:web:c2490b9a3eb358afffb277",
-
-        };
-
-        // Check if Firebase has already been initialized to avoid duplicate initialization
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        } else {
-            firebase.app(); // if already initialized, use that one
-        }
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
         // Initialize Firebase Analytics (if needed)
         if (typeof firebase.analytics === "function") {
             const analytics = firebase.analytics();
