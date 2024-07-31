@@ -34,20 +34,20 @@ class SemanticAnalysisScreen extends StatelessWidget {
                   return ListTile(
                     title: Text(review.username),
                     subtitle: Text(review.comment),
-                    trailing: FutureBuilder<String>(
-                      future: SentimentAnalysis().analyzeSentiment(review.comment),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator();
-                        } else if (snapshot.hasError) {
-                          return Text('Error');
-                        } else if (snapshot.hasData) {
-                          return Text(snapshot.data!); // Use ! to assert that snapshot.data is not null
-                        } else {
-                          return const Text('Unknown');
-                        }
-                      },
-                    ),
+                    // trailing: FutureBuilder<String>(
+                    //   future: SentimentAnalysis().analyzeSentiment(review.comment),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState == ConnectionState.waiting) {
+                    //       return CircularProgressIndicator();
+                    //     } else if (snapshot.hasError) {
+                    //       return Text('Error');
+                    //     } else if (snapshot.hasData) {
+                    //       return Text(snapshot.data!); // Use ! to assert that snapshot.data is not null
+                    //     } else {
+                    //       return const Text('Unknown');
+                    //     }
+                    //   },
+                    // ),
                   );
                 }).toList(),
               );
