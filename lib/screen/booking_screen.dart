@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:restaurants_app/screen/mygooglepay.dart';
 
 class BookingScreen extends StatefulWidget {
   final String restaurantId;
@@ -322,6 +323,7 @@ class _BookingScreenState extends State<BookingScreen> {
     _emailController.clear();
     _phoneController.clear();
     _commentsController.clear();
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyGooglePay(amount: 20)));
   }
 
   DateTime _getFormattedDateTime() {
